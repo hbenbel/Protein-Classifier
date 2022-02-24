@@ -1,1 +1,16 @@
-# Protein-Classifier
+██████╗ ██████╗  ██████╗ ████████╗ ██████╗███╗   ██╗███╗   ██╗
+██╔══██╗██╔══██╗██╔═══██╗╚══██╔══╝██╔════╝████╗  ██║████╗  ██║
+██████╔╝██████╔╝██║   ██║   ██║   ██║     ██╔██╗ ██║██╔██╗ ██║
+██╔═══╝ ██╔══██╗██║   ██║   ██║   ██║     ██║╚██╗██║██║╚██╗██║
+██║     ██║  ██║╚██████╔╝   ██║   ╚██████╗██║ ╚████║██║ ╚████║
+╚═╝     ╚═╝  ╚═╝ ╚═════╝    ╚═╝    ╚═════╝╚═╝  ╚═══╝╚═╝  ╚═══╝
+
+
+DESCRIPTION
+    Protein classifier
+
+USAGE
+    python src/train.py [-h] --dataset_path DATASET_PATH --log_path LOG_PATH
+                        [--seq_max_len SEQ_MAX_LEN] [--batch_size BATCH_SIZE]
+                        [--num_workers NUM_WORKERS] [--epochs EPOCHS]
+                        [--accelerator {cpu,gpu,tpu}] [--test]
