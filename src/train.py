@@ -13,9 +13,8 @@ def main(params):
     seed_everything(0)
 
     # Retrieve labels and ids
-    train_data, train_targets = getData(
-                                    dataset_path=params['dataset_path'],
-                                    partition='train')
+    train_data, train_targets = getData(dataset_path=params['dataset_path'],
+                                        partition='train')
 
     fam2label = getLabels(targets=train_targets)
     word2id = getVocabulary(data=train_data)
