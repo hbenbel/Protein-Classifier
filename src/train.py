@@ -40,7 +40,7 @@ def main(params):
                 val_dataloaders=dataloaders['dev'])
 
     if params['test'] is True:
-        trainer.test(test_dataloaders=dataloaders['test'])
+        trainer.test(dataloaders=dataloaders['test'])
 
 
 if __name__ == "__main__":

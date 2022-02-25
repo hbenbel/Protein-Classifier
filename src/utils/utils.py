@@ -16,7 +16,7 @@ def getData(dataset_path, partition):
 
 
 def getLabels(targets):
-    return {target: i for i, target in enumerate(targets.unique(), start=1)}
+    return {target: i for i, target in enumerate(targets.unique())}
 
 
 def getVocabulary(data):
