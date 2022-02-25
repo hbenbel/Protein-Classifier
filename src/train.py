@@ -2,6 +2,7 @@ import argparse
 from os.path import exists
 
 from pytorch_lightning import Trainer, seed_everything
+from pytorch_lightning.callbacks import ModelCheckpoint
 from pytorch_lightning.loggers import TensorBoardLogger
 
 from datasets import getDataloaders
@@ -29,18 +30,23 @@ def main(params):
     # Initialize model
     model = ProtCNN(num_id=len(word2id), num_classes=len(fam2label))
     logger = TensorBoardLogger(save_dir=params['log_path'])
+    checkpoint_callback = ModelCheckpoint(monitor="val_loss")
     trainer = Trainer(devices='auto',
                       accelerator=params['accelerator'],
                       max_epochs=params['epochs'],
-                      logger=logger)
+                      logger=logger,
+                      callbacks=[checkpoint_callback])
 
     # Launch model training (and testing)
-    trainer.fit(model=model,
-                train_dataloaders=dataloaders['train'],
-                val_dataloaders=dataloaders['dev'])
+    if params['train'] is True:
+        trainer.fit(model=model,
+                    train_dataloaders=dataloaders['train'],
+                    val_dataloaders=dataloaders['dev'])
 
     if params['test'] is True:
-        trainer.test(dataloaders=dataloaders['test'])
+        trainer.test(model=model if params['train'] is False else None,
+                     ckpt_path=params['ckpt_path'],
+                     dataloaders=dataloaders['test'])
 
 
 if __name__ == "__main__":
@@ -111,11 +117,30 @@ if __name__ == "__main__":
     )
 
     parser.add_argument(
+        '--train',
+        action='store_true',
+        help='Flag to allow the training of the model',
+        required=False,
+        default=True
+    )
+
+    parser.add_argument(
         '--test',
         action='store_true',
         help='Flag to allow the testing of the model',
         required=False,
         default=False
+    )
+
+    args = parser.parse_args()
+
+    parser.add_argument(
+        '--ckpt_path',
+        '-c',
+        type=str,
+        help='Path toward the pretrained model to use for testing only',
+        required=args.test is True and args.train is False,
+        default=None
     )
 
     args = parser.parse_args()
@@ -127,7 +152,9 @@ if __name__ == "__main__":
     params['num_workers'] = args.num_workers
     params['accelerator'] = args.accelerator
     params['epochs'] = args.epochs
+    params['train'] = args.train
     params['test'] = args.test
+    params['ckpt_path'] = args.ckpt.path
 
     assert exists(params['dataset_path']), "Dataset path doesn't exists :("
 

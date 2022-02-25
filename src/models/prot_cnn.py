@@ -4,7 +4,7 @@ from torch.nn import BatchNorm1d, Conv1d, Linear, MaxPool1d, Module, Sequential
 from torch.nn.functional import cross_entropy, relu
 from torch.optim import SGD
 from torch.optim.lr_scheduler import MultiStepLR
-from torchmetrics import Accuracy
+from torchmetrics import F1
 
 
 class Lambda(Module):
@@ -66,8 +66,9 @@ class ProtCNN(LightningModule):
             Linear(7680, num_classes)
         )
 
-        self.train_acc = Accuracy()
-        self.valid_acc = Accuracy()
+        self.train_f1 = F1()
+        self.valid_f1 = F1()
+        self.test_f1 = F1()
 
     def forward(self, x):
         return self.model(x.float())
@@ -79,17 +80,29 @@ class ProtCNN(LightningModule):
         self.log('train_loss', loss, on_step=True, on_epoch=True)
 
         pred = argmax(y_hat, dim=1)
-        self.train_acc(pred, y)
-        self.log('train_acc', self.train_acc, on_step=True, on_epoch=True)
+        self.train_f1(pred, y)
+        self.log('train_f1', self.train_f1, on_step=True, on_epoch=True)
 
         return loss
 
     def validation_step(self, batch, batch_idx):
         x, y = batch['sequence'], batch['target']
         y_hat = self(x)
+        loss = cross_entropy(y_hat, y)
+        self.log('val_loss', loss, on_step=False, on_epoch=True)
+
         pred = argmax(y_hat, dim=1)
-        acc = self.valid_acc(pred, y)
-        self.log('valid_acc', self.valid_acc, on_step=False, on_epoch=True)
+        acc = self.valid_f1(pred, y)
+        self.log('valid_f1', self.valid_f1, on_step=False, on_epoch=True)
+
+        return acc
+
+    def test_step(self, batch, batch_idx):
+        x, y = batch['sequence'], batch['target']
+        y_hat = self(x)
+        pred = argmax(y_hat, dim=1)
+        acc = self.test_f1(pred, y)
+        self.log("test_f1", self.test_f1, on_step=False, on_epoch=True)
 
         return acc
 
