@@ -37,9 +37,6 @@ USAGE
     --accelerator {cpu,gpu}, -a {cpu,gpu}
                             Type of device to use for the training
                             (default: cpu)
-    --train               Flag to allow the training of the model
-    --test                Flag to allow the testing of the model
-    --analyze             Flag to allow the analysis of dataset
     --learning_rate LEARNING_RATE, -lr LEARNING_RATE
                             Learning rate for the optimizer (default: 1e-2)
     --momentum MOMENTUM, -m MOMENTUM
@@ -52,3 +49,6 @@ USAGE
     --ckpt_path           Path to the saved model checkpoint.
                           This parameter is mandatory only when
                           flag --test is set without flag --train
+    --train               Flag to allow the training of the model
+    --test                Flag to allow the testing of the model
+    --analyze             Flag to allow the analysis of dataset
