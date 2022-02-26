@@ -48,9 +48,9 @@ USAGE
         --gamma GAMMA, -g GAMMA
                                 Multiplicative factor of learning rate decay
                                 (default: 0.9)
-        --ckpt_path           Path to the saved model checkpoint.
-                            This parameter is mandatory only when
-                            flag --test is set without flag --train
-        --train               Flag to allow the training of the model
-        --test                Flag to allow the testing of the model
-        --analyze             Flag to allow the analysis of dataset
+        --ckpt_path             Path to the saved model checkpoint.
+                                This parameter is mandatory only when
+                                flag --test is set without flag --train
+        --train                 Flag to allow the training of the model
+        --test                  Flag to allow the testing of the model
+        --analyze               Flag to allow the analysis of dataset
