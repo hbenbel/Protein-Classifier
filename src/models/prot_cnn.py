@@ -73,6 +73,7 @@ class ProtCNN(LightningModule):
         self.momentum = params['momentum']
         self.weight_decay = params['weight_decay']
         self.gamma = params['gamma']
+        self.milestones = list(range(5, params['epochs'] - 5, 2))
 
     def forward(self, x):
         return self.model(x.float())
@@ -116,7 +117,7 @@ class ProtCNN(LightningModule):
                         momentum=self.momentum,
                         weight_decay=self.weight_decay)
         lr_scheduler = MultiStepLR(optimizer,
-                                   milestones=[5, 8, 10, 12, 14, 16, 18, 20],
+                                   milestones=self.milestones,
                                    gamma=self.gamma)
 
         return {
