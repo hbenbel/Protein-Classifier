@@ -185,14 +185,12 @@ if __name__ == "__main__":
         default=0.9
     )
 
-    args = parser.parse_args()
-
     parser.add_argument(
         '--ckpt_path',
         '-c',
         type=str,
         help='Path toward the pretrained model to use for testing only',
-        required=args.test is True and args.train is False,
+        required=False,
         default=None
     )
 
@@ -219,6 +217,10 @@ if __name__ == "__main__":
     assert params['batch_size'] > 0, "Batch size should be > 0 :("
     assert params['num_workers'] >= 0, "Number of workers should be >= 0 :("
     assert params['epochs'] > 0, "Number of epoch should be > 0 :("
+
+    if params['test'] is True and params['train'] is False:
+        assert params['ckpt_path'] is not None,\
+               "Parameter ckpt_path should be set in case of test only running"
 
     if params['accelerator'] == 'gpu':
         assert is_available(), "No GPU found :("
