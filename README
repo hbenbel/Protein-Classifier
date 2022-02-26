@@ -25,7 +25,7 @@ USAGE
                                 Path to the output log directory
 
     optional arguments:
-        --helph, -h            show this help message and exit
+        --help, -h              show this help message and exit
         --seq_max_len SEQ_MAX_LEN, -s SEQ_MAX_LEN
                                 Maximum length of sequences to consider for training
                                 (default: 120)
