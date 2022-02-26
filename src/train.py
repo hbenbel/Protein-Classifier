@@ -121,7 +121,7 @@ if __name__ == "__main__":
         action='store_true',
         help='Flag to allow the training of the model',
         required=False,
-        default=True
+        default=False
     )
 
     parser.add_argument(
@@ -154,7 +154,7 @@ if __name__ == "__main__":
     params['epochs'] = args.epochs
     params['train'] = args.train
     params['test'] = args.test
-    params['ckpt_path'] = args.ckpt.path
+    params['ckpt_path'] = args.ckpt_path
 
     assert exists(params['dataset_path']), "Dataset path doesn't exists :("
 
