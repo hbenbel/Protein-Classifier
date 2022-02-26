@@ -4,6 +4,7 @@ from os.path import exists
 from pytorch_lightning import Trainer, seed_everything
 from pytorch_lightning.callbacks import ModelCheckpoint
 from pytorch_lightning.loggers import TensorBoardLogger
+from torch.cuda import is_available
 
 from datasets import getDataloaders
 from models import ProtCNN
@@ -121,7 +122,7 @@ if __name__ == "__main__":
         help='Type of device to use for the training',
         required=False,
         default='cpu',
-        choices=['cpu', 'gpu', 'tpu']
+        choices=['cpu', 'gpu']
     )
 
     parser.add_argument(
@@ -214,5 +215,12 @@ if __name__ == "__main__":
     params['gamma'] = args.gamma
 
     assert exists(params['dataset_path']), "Dataset path doesn't exists :("
+    assert params['seq_max_len'] > 0, "Sequence length should be > 0 :("
+    assert params['batch_size'] > 0, "Batch size should be > 0 :("
+    assert params['num_workers'] >= 0, "Number of workers should be >= 0 :("
+    assert params['epochs'] > 0, "Number of epoch should be > 0 :("
+
+    if params['accelerator'] == 'gpu':
+        assert is_available(), "No GPU found :("
 
     main(params)

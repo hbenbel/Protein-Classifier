@@ -13,7 +13,7 @@ USAGE
     python src/train.py [-h] --dataset_path DATASET_PATH --log_path LOG_PATH
                 [--seq_max_len SEQ_MAX_LEN] [--batch_size BATCH_SIZE]
                 [--num_workers NUM_WORKERS] [--epochs EPOCHS]
-                [--accelerator {cpu,gpu,tpu}] 
+                [--accelerator {cpu,gpu}] 
                 [--learning_rate LEARNING_RATE] [--momentum MOMENTUM]
                 [--weight_decay WEIGHT_DECAY] [--gamma GAMMA]
                 [--ckpt_path CKPT_PATH] [--train] [--test] [--analyze]
@@ -34,7 +34,7 @@ USAGE
                             (default: 8)
     --epochs EPOCHS, -e EPOCHS
                             Number of epochs for the training (default: 25)
-    --accelerator {cpu,gpu,tpu}, -a {cpu,gpu,tpu}
+    --accelerator {cpu,gpu}, -a {cpu,gpu}
                             Type of device to use for the training
                             (default: cpu)
     --train               Flag to allow the training of the model
