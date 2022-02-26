@@ -191,7 +191,7 @@ if __name__ == "__main__":
         type=str,
         help='Path toward the pretrained model to use for testing only',
         required=False,
-        default=None
+        default='best'
     )
 
     args = parser.parse_args()
@@ -219,7 +219,7 @@ if __name__ == "__main__":
     assert params['epochs'] > 0, "Number of epoch should be > 0 :("
 
     if params['test'] is True and params['train'] is False:
-        assert params['ckpt_path'] is not None,\
+        assert params['ckpt_path'] != 'best',\
                "Parameter ckpt_path should be set in case of test only running"
 
     if params['accelerator'] == 'gpu':
