@@ -4,7 +4,7 @@ from torch.nn import BatchNorm1d, Conv1d, Linear, MaxPool1d, Module, Sequential
 from torch.nn.functional import cross_entropy, relu
 from torch.optim import SGD
 from torch.optim.lr_scheduler import MultiStepLR
-from torchmetrics import F1
+from torchmetrics.classification.f_beta import F1Score
 
 
 class Lambda(Module):
@@ -55,7 +55,7 @@ class ResidualBlock(Module):
 
 
 class ProtCNN(LightningModule):
-    def __init__(self, num_id, num_classes):
+    def __init__(self, num_id, num_classes, params):
         super().__init__()
         self.model = Sequential(
             Conv1d(num_id, 128, kernel_size=1, padding=0, bias=False),
@@ -66,9 +66,13 @@ class ProtCNN(LightningModule):
             Linear(7680, num_classes)
         )
 
-        self.train_f1 = F1()
-        self.valid_f1 = F1()
-        self.test_f1 = F1()
+        self.train_f1 = F1Score()
+        self.valid_f1 = F1Score()
+        self.test_f1 = F1Score()
+        self.lr = params['learning_rate']
+        self.momentum = params['momentum']
+        self.weight_decay = params['weight_decay']
+        self.gamma = params['gamma']
 
     def forward(self, x):
         return self.model(x.float())
@@ -108,12 +112,12 @@ class ProtCNN(LightningModule):
 
     def configure_optimizers(self):
         optimizer = SGD(self.parameters(),
-                        lr=1e-2,
-                        momentum=0.9,
-                        weight_decay=1e-2)
+                        lr=self.lr,
+                        momentum=self.momentum,
+                        weight_decay=self.weight_decay)
         lr_scheduler = MultiStepLR(optimizer,
                                    milestones=[5, 8, 10, 12, 14, 16, 18, 20],
-                                   gamma=0.9)
+                                   gamma=self.gamma)
 
         return {
             "optimizer": optimizer,

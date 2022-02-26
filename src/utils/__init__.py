@@ -1,1 +1,1 @@
-from .utils import getData, getLabels, getVocabulary
+from .utils import analyzeDataset, getData, getLabels, getVocabulary

@@ -7,7 +7,7 @@ from pytorch_lightning.loggers import TensorBoardLogger
 
 from datasets import getDataloaders
 from models import ProtCNN
-from utils import getData, getLabels, getVocabulary
+from utils import analyzeDataset, getData, getLabels, getVocabulary
 
 
 def main(params):
@@ -16,6 +16,11 @@ def main(params):
     # Retrieve labels and ids
     train_data, train_targets = getData(dataset_path=params['dataset_path'],
                                         partition='train')
+
+    # Launch training data analysis
+    if params['analyze'] is True:
+        analyzeDataset(dataset_path=params['dataset_path'],
+                       log_path=params['log_path'])
 
     fam2label = getLabels(targets=train_targets)
     word2id = getVocabulary(data=train_data)
@@ -28,7 +33,10 @@ def main(params):
                                  shuffles=[True, False, False])
 
     # Initialize model
-    model = ProtCNN(num_id=len(word2id), num_classes=len(fam2label))
+    model = ProtCNN(num_id=len(word2id),
+                    num_classes=len(fam2label),
+                    params=params)
+
     logger = TensorBoardLogger(save_dir=params['log_path'])
     checkpoint_callback = ModelCheckpoint(monitor="val_loss")
     trainer = Trainer(devices='auto',
@@ -132,6 +140,14 @@ if __name__ == "__main__":
         default=False
     )
 
+    parser.add_argument(
+        '--analyze',
+        action='store_true',
+        help='Flag to allow the analysis of dataset',
+        required=False,
+        default=False
+    )
+
     args = parser.parse_args()
 
     parser.add_argument(
@@ -141,6 +157,42 @@ if __name__ == "__main__":
         help='Path toward the pretrained model to use for testing only',
         required=args.test is True and args.train is False,
         default=None
+    )
+
+    parser.add_argument(
+        '--learning_rate',
+        '-lr',
+        type=float,
+        help='Learning rate for the optimizer',
+        required=False,
+        default=1e-2
+    )
+
+    parser.add_argument(
+        '--momentum',
+        '-m',
+        type=float,
+        help='Momentum for the optimizer',
+        required=False,
+        default=0.9
+    )
+
+    parser.add_argument(
+        '--weight_decay',
+        '-w',
+        type=float,
+        help='Weight decay for the optimizer',
+        required=False,
+        default=1e-2
+    )
+
+    parser.add_argument(
+        '--gamma',
+        '-g',
+        type=float,
+        help='Multiplicative factor of learning rate decay',
+        required=False,
+        default=0.9
     )
 
     args = parser.parse_args()
@@ -154,7 +206,12 @@ if __name__ == "__main__":
     params['epochs'] = args.epochs
     params['train'] = args.train
     params['test'] = args.test
+    params['analyze'] = args.analyze
     params['ckpt_path'] = args.ckpt_path
+    params['learning_rate'] = args.learning_rate
+    params['momentum'] = args.momentum
+    params['weight_decay'] = args.weight_decay
+    params['gamma'] = args.gamma
 
     assert exists(params['dataset_path']), "Dataset path doesn't exists :("
 

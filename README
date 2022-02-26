@@ -11,6 +11,33 @@ DESCRIPTION
 
 USAGE
     python src/train.py [-h] --dataset_path DATASET_PATH --log_path LOG_PATH
-                        [--seq_max_len SEQ_MAX_LEN] [--batch_size BATCH_SIZE]
-                        [--num_workers NUM_WORKERS] [--epochs EPOCHS]
-                        [--accelerator {cpu,gpu,tpu}] [--test]
+                [--seq_max_len SEQ_MAX_LEN] [--batch_size BATCH_SIZE]
+                [--num_workers NUM_WORKERS] [--epochs EPOCHS]
+                [--accelerator {cpu,gpu,tpu}] [--ckpt_path CKPT_PATH]
+                [--train] [--test] [--analyze]
+
+    optional arguments:
+    -h, --help            show this help message and exit
+    --dataset_path DATASET_PATH, -d DATASET_PATH
+                            Path to the splitted dataset
+    --log_path LOG_PATH, -l LOG_PATH
+                            Path to the output log directory
+    --seq_max_len SEQ_MAX_LEN, -s SEQ_MAX_LEN
+                            Maximum length of sequences to consider for training
+                            (default: 120)
+    --batch_size BATCH_SIZE, -b BATCH_SIZE
+                            Batch size for training (default: 512)
+    --num_workers NUM_WORKERS, -n NUM_WORKERS
+                            Number of workers to use for the dataloaders
+                            (default: 8)
+    --epochs EPOCHS, -e EPOCHS
+                            Number of epochs for the training (default: 25)
+    --accelerator {cpu,gpu,tpu}, -a {cpu,gpu,tpu}
+                            Type of device to use for the training
+                            (default: cpu)
+    --train               Flag to allow the training of the model
+    --test                Flag to allow the testing of the model
+    --analyze             Flag to allow the analysis of dataset
+    --ckpt_path           Path to the saved model checkpoint.
+                          This parameter is mandatory only when
+                          flag --test is set without flag --train
