@@ -148,17 +148,6 @@ if __name__ == "__main__":
         default=False
     )
 
-    args = parser.parse_args()
-
-    parser.add_argument(
-        '--ckpt_path',
-        '-c',
-        type=str,
-        help='Path toward the pretrained model to use for testing only',
-        required=args.test is True and args.train is False,
-        default=None
-    )
-
     parser.add_argument(
         '--learning_rate',
         '-lr',
@@ -193,6 +182,17 @@ if __name__ == "__main__":
         help='Multiplicative factor of learning rate decay',
         required=False,
         default=0.9
+    )
+
+    args = parser.parse_args()
+
+    parser.add_argument(
+        '--ckpt_path',
+        '-c',
+        type=str,
+        help='Path toward the pretrained model to use for testing only',
+        required=args.test is True and args.train is False,
+        default=None
     )
 
     args = parser.parse_args()

@@ -13,8 +13,10 @@ USAGE
     python src/train.py [-h] --dataset_path DATASET_PATH --log_path LOG_PATH
                 [--seq_max_len SEQ_MAX_LEN] [--batch_size BATCH_SIZE]
                 [--num_workers NUM_WORKERS] [--epochs EPOCHS]
-                [--accelerator {cpu,gpu,tpu}] [--ckpt_path CKPT_PATH]
-                [--train] [--test] [--analyze]
+                [--accelerator {cpu,gpu,tpu}] 
+                [--learning_rate LEARNING_RATE] [--momentum MOMENTUM]
+                [--weight_decay WEIGHT_DECAY] [--gamma GAMMA]
+                [--ckpt_path CKPT_PATH] [--train] [--test] [--analyze]
 
     optional arguments:
     -h, --help            show this help message and exit
@@ -38,6 +40,15 @@ USAGE
     --train               Flag to allow the training of the model
     --test                Flag to allow the testing of the model
     --analyze             Flag to allow the analysis of dataset
+    --learning_rate LEARNING_RATE, -lr LEARNING_RATE
+                            Learning rate for the optimizer (default: 1e-2)
+    --momentum MOMENTUM, -m MOMENTUM
+                            Momentum for the optimizer (default: 0.9)
+    --weight_decay WEIGHT_DECAY, -w WEIGHT_DECAY
+                            Weight decay for the optimizer (default: 1e-2)
+    --gamma GAMMA, -g GAMMA
+                            Multiplicative factor of learning rate decay
+                            (default: 0.9)
     --ckpt_path           Path to the saved model checkpoint.
                           This parameter is mandatory only when
                           flag --test is set without flag --train
