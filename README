@@ -76,3 +76,6 @@ USAGE
     If you only want to test a model just put the --test flag without --train
     or --analyze. In this case you will have to provide the program with
     the ckpt_path parameter set to the path of a checkpoint.
+
+    If you want to visualize the training logs (training loss, ...) you can
+    use tensorboard with the command tensorboard --logdir <log_path>
