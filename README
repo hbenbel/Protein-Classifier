@@ -58,9 +58,19 @@ USAGE
         --analyze               Flag to allow the analysis of dataset
 
     If you run the program locally make sure to launch pip install -r requirements.txt
-    to install all the necessary packages first.
-    Also if you want to use gpu with docker we suggest to use nvidia-docker
+    to install all the necessary packages first (ideally in a virtual environment).
+    Also, if you want to use gpu with docker we suggest to use nvidia-docker.
 
-    To use docker:
+    To use docker, first make sure that you have enough ressources in the docker
+    configuration (cpu, shared memory, ...). Then you can use those commands:
         1) docker build -t protcnn .
         2) docker run protcnn python src/train.py <args>
+
+    Note that the results of the analysis generated with the --analyze parameter
+    will be stored in <log_path>/analysis folder.
+    The model trained with the --train parameter will be stored in
+    <log_path>/default/version_x/checkpoints. Also note that the program will keep
+    only the best model (according to its validation loss).
+    If you only want to test a model just put the --test flag without --train
+    or --analyze. In this case you will have to provide the program with the ckpt_path
+    parameter set to the path of a checkpoint.
