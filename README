@@ -56,3 +56,11 @@ USAGE
         --train                 Flag to allow the training of the model
         --test                  Flag to allow the testing of the model
         --analyze               Flag to allow the analysis of dataset
+
+    If you run the program locally make sure to launch pip install -r requirements.txt
+    to install all the necessary packages first.
+    Also if you want to use gpu with docker we suggest to use nvidia-docker
+
+    To use docker:
+        1) docker build -t protcnn .
+        2) docker run protcnn python src/train.py <args>
